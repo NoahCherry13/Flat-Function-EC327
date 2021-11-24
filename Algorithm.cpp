@@ -16,10 +16,10 @@ int main()
 
 	//test cases
 	vector <string> course_id = {"ENGEC327", "ENGEC327" ,"ENGEC327" , "CASMA226", "CASMA226" , "ENGEK307", "ENGEK307" , "ENGEK307" };
-	vector <string> prof_name = { "Densmore", "Guiles", "Hornet", "Lin", "Weinstein","Mass", "Pavi", "Pranet"};
-	vector <double> rating = {4.5,3.3,2.3,4.6,3.3,2.3,4.6,3.0};
-	vector <int> class_start_time = {1200,1101,980,1200,1101,980,1200,1234};
-	vector <int> class_end_time = {1920, 1321, 1245, 1345, 1321, 1245, 1343, 1321};
+	vector <string> prof_name = { "Densmore", "Guiles", "Noah", "Lin", "Weinstein","Mass", "Pavi", "Pranet"};
+	vector <double> rating = {4.5,3.3,2.3,4.6,3.3,4.3,3.2,3.0};
+	vector <int> class_start_time = {1200,1321,980,1200,1101,980,1200,1234};
+	vector <int> class_end_time = {1920, 1101, 1245, 1345, 1321, 1245, 1343, 1321};
 	vector <vector<char>> days_in_file = { {'M','W'}, { 'M','W','F'} , { 'T','R' } , { 'M','W' } ,{ 'M','W','F' }, { 'T','R' }, { 'M','W','F' }, { 'T','R' } };
 
 	int size = course_id.size();
@@ -42,36 +42,14 @@ int main()
 		courseslist.push_back(prof_temp);
 	}
 
-	/*Professor* p1 = new Professor();
-	p1->SetProfInfo("ENGEC327", "Densmore", 4.2, 1200, 0010, { 'M', 'W' });
-	Professor* p2 = new Professor();
-	p2->SetProfInfo("CASMA223", "Weinstein", 3.2, 1000, 2010, { 'M', 'W', 'F'});
-	Professor* p3 = new Professor();
-	p3->SetProfInfo("ENGEK307", "Semeter", 3.8, 1500, 1720, { 'T', 'R' });
-	Professor* p4 = new Professor();
-	p4->SetProfInfo("CASPY212", "Li", 2.2, 1230, 1010, { 'M', 'W' });*/
-	/*course.push_back(p1);
-	course.push_back(p2);
-	course.push_back(p3);
-	course.push_back(p4);
-	Professor* head = nullptr;*/
-
-	/*prof.AddNode("ENGEC327", 1, "Densmore", 4.6, 1200, 920, {'M','W'}, courseslist);
-	prof.AddNode("ENGEC327", 1, "Guiles", 3.3, 1101, 1321, { 'M','W','F'}, courseslist);
-	prof.AddNode("ENGEC327", 1, "Hornet", 2.3, 980, 1245, { 'T','R' }, courseslist);
-	prof.AddNode("CASMA223", 2, "Lin", 4.6, 1200, 920, { 'M','W' }, courseslist);
-	prof.AddNode("CASMA223", 2, "Weinstein", 3.3, 1101, 1321, { 'M','W','F' }, courseslist);
-	prof.AddNode("CASMA223", 2, "Mass", 2.3, 980, 1245, { 'T','R' }, courseslist);
-	prof.AddNode("ENGEC307", 3, "Pavi", 4.6, 1200, 920, { 'M','W' }, courseslist);
-	prof.AddNode("ENGEC307", 3, "Pranet", 3.3, 1101, 1321, { 'M','W','F' }, courseslist);*/
-
-	/*for (vector<Professor*> p : courseslist)
+	for (vector<Professor*> p : courseslist)
 	{
 		for (Professor* p_1 : p)
 		{
 			p_1->Display();
 		}
-	}*/
+		cout << "\n" << endl;
+	}
 
 	return 0;
 }
