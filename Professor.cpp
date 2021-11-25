@@ -41,3 +41,8 @@ void Professor::Display()
 	cout << "\n";
 }
 
+double Professor::GetRating()
+{
+	return rating;
+}
+
