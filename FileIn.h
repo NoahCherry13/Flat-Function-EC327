@@ -24,8 +24,17 @@ private:
 	vector <vector<char>> days_in_file;		 //stores the character array of the class days for each prof
 public:
 	void ReadFromFile(string filename);
+	//getters to return the needed variable 
+	vector <string> getCourseId();
+	vector <string> getName();
+	vector <double> getRating();
+	vector <int> getStartTime();
+	vector <int> getEndTime();
+	vector <vector<char>> getDays();
+	int getSize();
 
 };
 
 #endif
+
 
