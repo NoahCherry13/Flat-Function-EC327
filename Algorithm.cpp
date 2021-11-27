@@ -4,23 +4,40 @@
 // 3) Traverse using probably a binary tree algorith or doubly linked list 
 
 #include "Professor.h"
-#include "FileIn.h"
+//#include "FileIn.h"
 #include "Course.h"
-#include <algorithm>
-#include <cmath>
 
 int main()
 {
 	Professor prof;
+	Course course;
 	vector <vector<Professor*>> courseslist;
 
 	//test cases
-	vector <string> course_id = {"ENGEC327", "ENGEC327" ,"ENGEC327" , "CASMA226", "CASMA226" , "ENGEK307", "ENGEK307" , "ENGEK307" };
-	vector <string> prof_name = { "Densmore", "Guiles", "Noah", "Lin", "Weinstein","Mass", "Pavi", "Pranet"};
-	vector <double> rating = {4.5,3.3,2.3,4.6,3.3,4.3,3.2,3.0};
-	vector <int> class_start_time = {1200,1321,980,1200,1101,980,1200,1234};
-	vector <int> class_end_time = {1920, 1101, 1245, 1345, 1321, 1245, 1343, 1321};
-	vector <vector<char>> days_in_file = { {'M','W'}, { 'M','W','F'} , { 'T','R' } , { 'M','W' } ,{ 'M','W','F' }, { 'T','R' }, { 'M','W','F' }, { 'T','R' } };
+	vector <string> course_id = {"ENGEC327", "ENGEC327" ,"ENGEC327" ,
+							     "CASMA226", "CASMA226" , 
+								 "ENGEK307", "ENGEK307" , "ENGEK307" ,
+								 "CASPY212", "CASPY212"};
+	vector <string> prof_name = { "Densmore", "Guiles", "Noah", 
+								  "Lin", "Weinstein",
+								  "Mass", "Pavi", "Pranet",
+								  "Aya", "Nashwa"};
+	vector <double> rating = {4.5,3.3,2.3,
+							  4.6,3.3,
+							  4.3,3.2,3.0,
+							  4.1, 2.9};
+	vector <int> class_start_time = {1200,1321,980,
+									 1200,1101,
+									 980,1200,1234,
+									 1230,1100};
+	vector <int> class_end_time = {1920, 1101, 1245, 
+								   1345, 1321,
+								   1245, 1343, 1321,
+								   1430,1212};
+	vector <vector<char>> days_in_file = { {'M','W'}, { 'M','W','F'} , { 'T','R' } ,
+										   { 'M','W' } ,{ 'M','W','F' },
+										   { 'T','R' }, { 'M','W','F' }, { 'T','R' },
+										   {'M'}, {'T', 'R'} };
 
 	int size = course_id.size();
 
@@ -42,14 +59,12 @@ int main()
 		courseslist.push_back(prof_temp);
 	}
 
-	for (vector<Professor*> p : courseslist)
-	{
-		for (Professor* p_1 : p)
-		{
-			p_1->Display();
-		}
-		cout << "\n" << endl;
-	}
+	vector <double> avg;
+	avg = course.CalcAverages(courseslist);
 
+	for (double p_1 : avg)
+	{
+		cout << p_1 << " ";
+	}
 	return 0;
 }
