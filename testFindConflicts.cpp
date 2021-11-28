@@ -26,9 +26,6 @@ int main()
     vector <Professor*> prof_ptrs = {ptr1, ptr2, ptr3, ptr4, ptr5};
 
 
-
-    vector <vector<Professor*>> sameDay_ptrs = getSameDay(prof_ptrs);
-
     //testing hasTimeConflict function
     if(hasTimeConflicts(prof_ptrs))
     {
