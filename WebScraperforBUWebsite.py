@@ -25,6 +25,7 @@ def time_convert(t):
 #Pranet- Testing URL logic for multiple websites
 
 class_code = input("Enter the class you want to take with spaces: ")
+semester = input("Please enter the semester: ")
 
 #Pranet - Rishav and Aya require input in this form
 
@@ -48,18 +49,10 @@ C_URL = "/courses/"
 Course_URL = college_code + "-" + class_name + "-" + class_code + "/"
 
 URL = P_URL + CollegeURL + C_URL + Course_URL
-print(URL)
+#print(URL)
 
 #Pranet - Data scraped 
-#URL = "https://www.bu.edu/academics/cas/courses/cas-ma-226/"
 tables = pd.read_html(URL)
-#print("There are : ",len(tables)," tables")
-#for i in range (0,len(tables)):
-    #print(tables[i])
-
-#print(tables[0])
-#print(tables[0].loc[0,'Instructor'])
-#professor_name = (tables[0]).loc[0,'Instructor']
 #Pranet - Help us index into particular dataframe elements
 professor_name = []
 days = []
@@ -67,33 +60,59 @@ time = []
 start_time = []
 end_time = [] 
 section = []
-for i in range (0,len(tables)):
-    if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
-        professor_name.append((tables[i].loc[0,'Instructor'] ))
-        splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
-        start_end = splitter[1].split("-",1)
-        days.append(splitter[0])
-        start_time.append(time_convert(start_end[0]))
-        end_time.append(time_convert(start_end[1]))
-        section.append(tables[i].loc[0,'Section'])
+
+
+for i in range(0, len(tables)):
+    section.append(tables[i].loc[0,'Section'])  
+fall_index = section.index("A1")
+spring_index = section.index("A1",(fall_index+1))
+
+#print(fall_index)
+#print(spring_index)
+
+
+if(semester == "F"):
+    for i in range (0,spring_index):
+        if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
+            professor_name.append((tables[i].loc[0,'Instructor'] ))
+            splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+            start_end = splitter[1].split("-",1)
+            days.append(splitter[0])
+            start_time.append(time_convert(start_end[0]))
+            end_time.append(time_convert(start_end[1]))
+else:
+    for i in range (spring_index,len(tables)):
+        if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
+            professor_name.append((tables[i].loc[0,'Instructor'] ))
+            splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+            start_end = splitter[1].split("-",1)
+            days.append(splitter[0])
+            start_time.append(time_convert(start_end[0]))
+            end_time.append(time_convert(start_end[1]))
+            
+               
+#for i in range (0,len(tables)):
+    #if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
+        #professor_name.append((tables[i].loc[0,'Instructor'] ))
+        #splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+        #start_end = splitter[1].split("-",1)
+        #days.append(splitter[0])
+        #start_time.append(time_convert(start_end[0]))
+        #end_time.append(time_convert(start_end[1]))
+        #section.append(tables[i].loc[0,'Section'])
   
-print(section)
-#test_string = "MW 2:30 pm-4:15 pm"
-#splitter = test_string.split(" ",1)
-#print(splitter)
-#day = splitter[0]
-#print(day)
-#time[0] = splitter[1]
-#print(day[0]," and ", time[0])   
-#print(days)
-#print(time)
-print(start_time)
-print(end_time)
+#print(section)
+#print(start_time)
+#print(end_time)
+
+
+
+    
+    
 filename = "test.csv"
 with open(filename, 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
     for i in range(0,len(professor_name)):
         row = [course_name,professor_name[i],days[i],start_time[i], end_time[i]]
         csvwriter.writerow(row)
-    
     
