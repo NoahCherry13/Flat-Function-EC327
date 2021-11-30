@@ -67,10 +67,6 @@ for i in range(0, len(tables)):
 fall_index = section.index("A1")
 spring_index = section.index("A1",(fall_index+1))
 
-#print(fall_index)
-#print(spring_index)
-
-
 if(semester == "F"):
     for i in range (0,spring_index):
         if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
@@ -90,27 +86,9 @@ else:
             start_time.append(time_convert(start_end[0]))
             end_time.append(time_convert(start_end[1]))
             
-               
-#for i in range (0,len(tables)):
-    #if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
-        #professor_name.append((tables[i].loc[0,'Instructor'] ))
-        #splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
-        #start_end = splitter[1].split("-",1)
-        #days.append(splitter[0])
-        #start_time.append(time_convert(start_end[0]))
-        #end_time.append(time_convert(start_end[1]))
-        #section.append(tables[i].loc[0,'Section'])
-  
-#print(section)
-#print(start_time)
-#print(end_time)
-
-
-
-    
-    
+                   
 filename = "test.csv"
-with open(filename, 'w') as csvfile:
+with open(filename, 'w', newline ='') as csvfile:
     csvwriter = csv.writer(csvfile)
     for i in range(0,len(professor_name)):
         row = [course_name,professor_name[i],days[i],start_time[i], end_time[i]]
