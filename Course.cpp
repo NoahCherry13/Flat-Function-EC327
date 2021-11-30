@@ -1,4 +1,5 @@
 #include "Course.h"
+#include "FindConflicts.h"
 
 vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 {
@@ -38,13 +39,15 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 		}
 		for (int i = 0; i < size_clist; i++)
 		{
-			t_rating += clist[i][store_count[i].loop_helper]->GetRating();
+			t_rating += clist[i][store_count[i].loop_helper]->getRating();
 			store_combi_ids.push_back(store_count[i].loop_helper);
 		}
 
 		//check for time before pushing
-		MakeCombination(store_combi_ids, clist, size_clist);
-		average_rating.push_back((t_rating/size_clist));
+		if(!hasTimeConflicts(MakeCombination(store_combi_ids, clist, size_clist)));
+		{	
+			average_rating.push_back((t_rating/size_clist));
+		}
 			
 		store_count[size_clist - 1].loop_helper += 1;
 		for (int i = size_clist - 1; i >= 0; i--)
