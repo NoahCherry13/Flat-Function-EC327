@@ -49,7 +49,6 @@ C_URL = "/courses/"
 Course_URL = college_code + "-" + class_name + "-" + class_code + "/"
 
 URL = P_URL + CollegeURL + C_URL + Course_URL
-#print(URL)
 
 #Pranet - Data scraped 
 tables = pd.read_html(URL)
