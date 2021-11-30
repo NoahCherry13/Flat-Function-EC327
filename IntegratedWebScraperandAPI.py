@@ -59,6 +59,7 @@ while True:
     start_time = []
     end_time = [] 
     section = []
+    location = []
     
     
     for i in range(0, len(tables)):
@@ -75,7 +76,19 @@ while True:
                 days.append(splitter[0])
                 start_time.append(time_convert(start_end[0]))
                 end_time.append(time_convert(start_end[1]))
-    else:
+                location.append(tables[i].loc[0,'Location'])
+            else:
+                if(tables[i].loc[0,'Location'] in location):
+                    professor_name.append((tables[i].loc[0,'Instructor'] ))
+                    splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+                    start_end = splitter[1].split("-",1)
+                    days.append(splitter[0])
+                    start_time.append(time_convert(start_end[0]))
+                    end_time.append(time_convert(start_end[1]))
+                    location.append(tables[i].loc[0,'Location'])
+                    
+    
+    else:       
         for i in range (spring_index,len(tables)):
             if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
                 professor_name.append((tables[i].loc[0,'Instructor'] ))
@@ -84,10 +97,18 @@ while True:
                 days.append(splitter[0])
                 start_time.append(time_convert(start_end[0]))
                 end_time.append(time_convert(start_end[1]))
-    
+                location.append(tables[i].loc[0,'Location'])
+            else:
+                if(tables[i].loc[0,'Location'] in location):
+                    professor_name.append((tables[i].loc[0,'Instructor'] ))
+                    splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+                    start_end = splitter[1].split("-",1)
+                    days.append(splitter[0])
+                    start_time.append(time_convert(start_end[0]))
+                    end_time.append(time_convert(start_end[1]))
+                    location.append(tables[i].loc[0,'Location'])
+                
     filename = "test.csv"
-    
-    
     if(call_count == 0):
         call_count = call_count + 1
         with open(filename, 'w', newline ='') as csvfile:
