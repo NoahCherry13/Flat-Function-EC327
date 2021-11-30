@@ -41,8 +41,32 @@ void Professor::Display()
 	cout << "\n";
 }
 
-double Professor::GetRating()
+string Professor :: getCourseID()
+{
+	return course_id;
+}
+
+string Professor :: getName()
+{
+	return name;
+}
+
+double Professor :: getRating()
 {
 	return rating;
 }
 
+int Professor :: getStartTime()
+{
+	return start_time;
+}
+
+int Professor :: getEndTime()
+{
+	return end_time;
+}
+
+vector <char> Professor :: getDay()
+{
+	return day_taught;
+}

@@ -22,7 +22,12 @@ public:
 	Professor(string c_id, string name, double rating, int start_time, int end_time, vector <char> days);
 	void AddNode(string c_id, int course_id_num, string name, double rating, int start_time, int end_time, vector <char> days, vector <Professor*> &list);
 	void Display();
-	double GetRating();
+	string getCourseID();
+	string getName();
+	double getRating();
+	int getStartTime();
+	int getEndTime();
+	vector <char> getDay();
 };
 
 #endif
