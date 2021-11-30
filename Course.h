@@ -12,6 +12,7 @@ class Course
 {
 public:
 	vector <double> CalcAverages(vector <vector<Professor*>> clist);
+	vector <Professor*> MakeCombination(vector <int> ids, vector <vector <Professor*>> clist, int clist_size);
 };
 
 #endif

@@ -11,6 +11,7 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 
 	vector <loop_calc> store_count(size_clist, { 0, false });
 	double t_rating = 0;
+	vector <int> store_combi_ids(size_clist);
 	vector <double> average_rating;
 
 	int count = 0;
@@ -38,7 +39,11 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 		for (int i = 0; i < size_clist; i++)
 		{
 			t_rating += clist[i][store_count[i].loop_helper]->GetRating();
+			store_combi_ids.push_back(store_count[i].loop_helper);
 		}
+
+		//check for time before pushing
+		MakeCombination(store_combi_ids, clist, size_clist);
 		average_rating.push_back((t_rating/size_clist));
 			
 		store_count[size_clist - 1].loop_helper += 1;
@@ -67,7 +72,18 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 				store_count[i].did_it_loop = false;
 		}
 		t_rating = 0;
+		store_combi_ids = {};
 	}
 	return { 0 };
+}
+
+vector<Professor*> Course::MakeCombination(vector<int> ids, vector<vector<Professor*>> clist, int clist_size)
+{
+	vector <Professor*> ret_combi(clist_size);
+	for (int i = 0; i < clist_size; i++)
+	{
+		ret_combi.push_back(clist[i][ids[i]]);
+	}
+	return ret_combi;
 }
 
