@@ -1,5 +1,6 @@
 #ifndef FINDCONFLICTS_H
 #define FINDCONFLICTS_H
+
 #include "Professor.h"
 #include <algorithm>
 

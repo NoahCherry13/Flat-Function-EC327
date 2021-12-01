@@ -7,12 +7,12 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 	vector <int> plist_size;
 	for (vector<Professor*> plist : clist)
 	{
-		plist_size.push_back(plist.size()-1);
+		plist_size.push_back(plist.size() - 1);
 	}
 
 	vector <loop_calc> store_count(size_clist, { 0, false });
 	double t_rating = 0;
-	vector <int> store_combi_ids(size_clist);
+	int test = 1;
 	vector <double> average_rating;
 
 	int count = 0;
@@ -37,18 +37,34 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 				return average_rating;
 			}
 		}
+		vector <int> store_combi_ids;
 		for (int i = 0; i < size_clist; i++)
 		{
 			t_rating += clist[i][store_count[i].loop_helper]->getRating();
 			store_combi_ids.push_back(store_count[i].loop_helper);
 		}
+		vector <Professor*> temp_storage = MakeCombination(store_combi_ids, clist, size_clist);
+
+		//print combinations for test
+		
+		cout << "Combination#" << test <<": " << endl;
+		test++;
+		for (Professor* p : temp_storage)
+		{
+			p->Display();
+		}
+		cout << "__________" << endl;
 
 		//check for time before pushing
-		if(!hasTimeConflicts(MakeCombination(store_combi_ids, clist, size_clist)));
-		{	
-			average_rating.push_back((t_rating/size_clist));
+		if (!hasTimeConflicts(temp_storage))
+		{
+			cout << "No time comflict" << endl;
+			average_rating.push_back((t_rating / size_clist));
 		}
-			
+
+		store_combi_ids.clear();
+		temp_storage.clear();
+
 		store_count[size_clist - 1].loop_helper += 1;
 		for (int i = size_clist - 1; i >= 0; i--)
 		{
@@ -63,7 +79,7 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 					{
 						store_count[i - 1].did_it_loop = true;
 					}
-					if( i != size_clist - 1)
+					if (i != size_clist - 1)
 						store_count[i].did_it_loop = false;
 				}
 				if (store_count[i].did_it_loop)
@@ -75,14 +91,13 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 				store_count[i].did_it_loop = false;
 		}
 		t_rating = 0;
-		store_combi_ids = {};
 	}
 	return { 0 };
 }
 
-vector<Professor*> Course::MakeCombination(vector<int> ids, vector<vector<Professor*>> clist, int clist_size)
+vector <Professor*> Course::MakeCombination(vector<int> ids, vector<vector<Professor*>> clist, int clist_size)
 {
-	vector <Professor*> ret_combi(clist_size);
+	vector <Professor*> ret_combi;
 	for (int i = 0; i < clist_size; i++)
 	{
 		ret_combi.push_back(clist[i][ids[i]]);
