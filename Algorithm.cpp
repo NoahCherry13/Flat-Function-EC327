@@ -1,7 +1,7 @@
-//Use a greedy algorithm to traverse the csv files from the web scraper
+//Use a looping algorithm to traverse the csv files from the web scraper
 // 1) CSV file read from the output of web scraper
 // 2) Store the info in the member variable into the object variables
-// 3) Traverse using probably a binary tree algorith or doubly linked list 
+// 3) Traverse using a vector of vectors 
 
 #include "Professor.h"
 #include "FileIn.h"
@@ -15,60 +15,13 @@ int main()
 	FileIn inputFile;
 	string fileName = "testFile.csv";
 	inputFile.ReadFromFile(fileName);
-	//test cases
-	vector <string> course_id = inputFile.getCourseId();/*{"ENGEC327", "ENGEC327" ,"ENGEC327" ,
-								 "CASMA226", "CASMA226" ,
-								 "ENGEK307", "ENGEK307" , "ENGEK307" ,
-								 "CASPY212", "CASPY212"};*/
-	cout << "Course ID's: " << endl;
-	/*for (string str : course_id)
-	{
-		cout << str << ", " << endl;
-	}*/
-	vector <string> prof_name = inputFile.getName();/*{ "Densmore", "Guiles", "Noah",
-								  "Lin", "Weinstein",
-								  "Mass", "Pavi", "Pranet",
-								  "Aya", "Nashwa"};*/
-	cout << "Names: " << endl;
-	/*for (string name : prof_name)
-	{
-		cout << name << ", " << endl;
-	}*/
-	vector <double> rating = inputFile.getRating();/*{4.5,3.3,2.3,
-							  4.6,3.3,
-							  4.3,3.2,3.0,
-							  4.1, 2.9};*/
-	cout << "Course ID's: " << endl;
-	/*for (double str : rating)
-	{
-		cout << str << ", " << endl;
-	}*/
-	vector <int> class_start_time = inputFile.getStartTime(); /*{1200,1321,980,
-									 1200,1101,
-									 980,1200,1234,
-									 1230,1100};*/
-	/*for (int str : class_start_time)
-	{
-		cout << str << ", " << endl;
-	}*/
-	vector <int> class_end_time = inputFile.getEndTime();/*{1920, 1101, 1245,
-								   1345, 1321,
-								   1245, 1343, 1321,
-								   1430,1212};*/
-	//for (double str : class_end_time)
-	//{
-	//	cout << str << ", " << endl;
-	//}
-	vector <vector<char>> days_in_file = inputFile.getDays();/*{ {'M','W'}, { 'M','W','F'} , { 'T','R' } ,
-										   { 'M','W' } ,{ 'M','W','F' },
-										   { 'T','R' }, { 'M','W','F' }, { 'T','R' },
-										   {'M'}, {'T', 'R'} };*/
-	/*for (vector <char> str : days_in_file)
-	{
-		for(char str: str)
-		cout << str << ", " << endl;
-		cout << endl;
-	}*/
+
+	vector <string> course_id = inputFile.getCourseId();
+	vector <string> prof_name = inputFile.getName();
+	vector <double> rating = inputFile.getRating();
+	vector <int> class_start_time = inputFile.getStartTime(); 
+	vector <int> class_end_time = inputFile.getEndTime();
+	vector <vector<char>> days_in_file = inputFile.getDays();
 
 	int size = course_id.size();
 
@@ -84,18 +37,39 @@ int main()
 		{
 			if (cid_copy[i] == course_id[j])
 			{
-				prof.AddNode(course_id[j], i, prof_name[j], rating[j], class_start_time[i], class_end_time[j], days_in_file[1], prof_temp);
+				prof.AddNode(course_id[j], i, prof_name[j], rating[j], class_start_time[j], class_end_time[j], days_in_file[j], prof_temp);
 			}
 		}
 		courseslist.push_back(prof_temp);
 	}
 
-	vector <double> avg;
-	avg = course.CalcAverages(courseslist);
+	vector <rating_prof> list_of_best;
+	vector <double> avg_rating;
+	list_of_best = course.CalcAverages(courseslist);
 
-	for (double p_1 : avg)
+	for (rating_prof p_1 : list_of_best)
 	{
-		cout << p_1 << " ";
+		avg_rating.push_back(p_1.average_rating);
 	}
+
+	double maximum_average =  *max_element(avg_rating.begin(), avg_rating.end());
+	int index_of_max = 0;
+
+	for (int i = 0; i < avg_rating.size(); i++)
+	{
+		if (maximum_average == avg_rating[i])
+		{
+			index_of_max = i;
+		}
+	}
+
+	cout << "BEST POSSIBLE SCHEDULE" << endl;
+	cout << "With an average professor rating of: " << list_of_best[index_of_max].average_rating << endl;
+	cout << "The Classes are: " << endl;
+	for (Professor* professors : list_of_best[index_of_max].profs)
+	{
+		professors->Display();
+	}
+
 	return 0;
 }

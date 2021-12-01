@@ -11,12 +11,12 @@ Professor::Professor()
 
 Professor::Professor(string c_id, string name, double rating, int start_time, int end_time, vector<char> days)
 {
-	course_id = c_id;
+	this->course_id = c_id;
 	this->name = name;
 	this->rating = rating;
 	this->start_time = start_time;
 	this->end_time = end_time;
-	day_taught = days;
+	this->day_taught = days;
 }
 
 void Professor::AddNode(string c_id, int course_id_num, string name, double rating, int start_time, int end_time, vector<char> days, vector <Professor*> &list)

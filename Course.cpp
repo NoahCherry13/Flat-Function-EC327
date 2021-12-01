@@ -1,7 +1,7 @@
 #include "Course.h"
 #include "FindConflicts.h"
 
-vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
+vector <rating_prof> Course::CalcAverages(vector<vector<Professor*>> clist)
 {
 	int size_clist = clist.size();
 	vector <int> plist_size;
@@ -13,7 +13,7 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 	vector <loop_calc> store_count(size_clist, { 0, false });
 	double t_rating = 0;
 	int test = 1;
-	vector <double> average_rating;
+	vector <rating_prof> average_rating;
 
 	int count = 0;
 	while (true)
@@ -47,19 +47,18 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 
 		//print combinations for test
 		
-		cout << "Combination#" << test <<": " << endl;
+		/*cout << "Combination#" << test <<": " << endl;
 		test++;
 		for (Professor* p : temp_storage)
 		{
 			p->Display();
 		}
-		cout << "__________" << endl;
+		cout << "__________" << endl;*/
 
 		//check for time before pushing
 		if (!hasTimeConflicts(temp_storage))
 		{
-			cout << "No time comflict" << endl;
-			average_rating.push_back((t_rating / size_clist));
+			average_rating.push_back({ (t_rating / size_clist), temp_storage });
 		}
 
 		store_combi_ids.clear();
@@ -92,7 +91,6 @@ vector <double> Course::CalcAverages(vector<vector<Professor*>> clist)
 		}
 		t_rating = 0;
 	}
-	return { 0 };
 }
 
 vector <Professor*> Course::MakeCombination(vector<int> ids, vector<vector<Professor*>> clist, int clist_size)
