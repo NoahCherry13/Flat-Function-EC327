@@ -13,7 +13,7 @@ import csv
 #Function to convert hours from 12 hour format to 24 hours format
 def time_convert(t):
     am_or_pm = t.split(" ",1)
-    if(am_or_pm[1] == "pm"):
+    if(am_or_pm[1] == "pm" and am_or_pm[0][:2] != "12"):
         time = am_or_pm[0].replace(":","")
         time = int(time)
         return (time+1200)
