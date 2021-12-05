@@ -7,6 +7,11 @@
 #include "FileIn.h"
 #include "Course.h"
 
+bool compareByRating(const rating_prof &i, const rating_prof &j)
+{
+	return i.average_rating > j.average_rating;
+}
+
 int main()
 {
 	Professor prof;
@@ -44,32 +49,42 @@ int main()
 	}
 
 	vector <rating_prof> list_of_best;
-	vector <double> avg_rating;
 	list_of_best = course.CalcAverages(courseslist);
 
-	for (rating_prof p_1 : list_of_best)
-	{
-		avg_rating.push_back(p_1.average_rating);
-	}
-
-	double maximum_average =  *max_element(avg_rating.begin(), avg_rating.end());
-	int index_of_max = 0;
-
-	for (int i = 0; i < avg_rating.size(); i++)
-	{
-		if (maximum_average == avg_rating[i])
-		{
-			index_of_max = i;
-		}
-	}
+	sort(list_of_best.begin(), list_of_best.end(), compareByRating);
 
 	cout << "BEST POSSIBLE SCHEDULE" << endl;
-	cout << "With an average professor rating of: " << list_of_best[index_of_max].average_rating << endl;
+	cout << "With an average professor rating of: " << list_of_best[0].average_rating << endl;
 	cout << "The Classes are: " << endl;
-	for (Professor* professors : list_of_best[index_of_max].profs)
+	for (Professor* professors : list_of_best[0].profs)
 	{
 		professors->Display();
 	}
+	
+	cout << "_______________________________________________________" << endl;
 
-	return 0;
+	char choice;
+	int count_best = 1;
+	cout << "Do You Wish To See The Next Best Schedule? (Y/Any other character)" << endl;
+	cin >> choice;
+
+	while (choice == 'Y')
+	{
+		cout << "At Position - " << (count_best + 1) << " ,the rating is " << list_of_best[count_best].average_rating << endl;
+		for (Professor* professors : list_of_best[count_best].profs)
+		{
+			professors->Display();
+		}
+		cout << "_______________________________________________________" << endl;
+		count_best++;
+		if (count_best <= list_of_best.size())
+		{
+			cout << "Do You Wish To See The Next Best Schedule? (Y/N)" << endl;
+			cin >> choice;
+		}
+		else
+			break;
+	}
+	
+
 }
