@@ -129,6 +129,8 @@ class RateMyProfApi:
             return self.professorID
 
     def GetAverageRating(self, name):
+        if(name == "TBA"):
+            return 0
         id = self.GetID(name)
         if (id != -1000):
             return self.professors[id].overall_rating
