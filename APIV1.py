@@ -102,7 +102,7 @@ class RateMyProfApi:
                 count += 1
 
         if (count > 1):
-            print("Multiple professors found, please enter their department from the list")
+            print("Multiple professors found with last name", ln ," please enter their department from the list")
             for profID in self.professors:
                 if self.professors[profID].last_name == ln:
                     departmentlist.append(self.professors[profID].department)
