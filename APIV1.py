@@ -1,16 +1,16 @@
+#!/usr/bin/env python3
 import requests
 import json
 import math
 import csv
 import os
 import pandas as pd
-
 from professor import Professor
 
 
 # This code has been tested using Python 3.6 interpreter and Linux (Ubuntu).
 # It should run under Windows, if anything you may need to make some adjustments for the file paths of the CSV files.
-
+#The code for the RateMyProfessor was obtained from Github. Certain modifications were made. The link will be provided in the documentation.
 
 class ProfessorNotFound(Exception):
     def __init__(self, search_argument, search_parameter: str = "Name"):
@@ -147,7 +147,6 @@ if __name__ == '__main__':
     # print(uci.GetAverageRating("Densmore"))
 
 
-# Pranet - to get the libraries that support the data scraper
 # Function to convert hours from 12 hour format to 24 hours format
 def time_convert(t):
     am_or_pm = t.split(" ", 1)
@@ -167,10 +166,14 @@ while True:
     class_code = input("Enter the class you want to take with spaces (if you want to exit enter q): ")
     if (class_code == "q"):
         break
-    semester = input("Please enter the semester (F or S): ")
+    
     course_name = (class_code.replace(" ", "")).upper()
 
     code = class_code.split()
+    if(len(code) !=3):
+        print("Sorry invalid input")
+        continue
+    
     if (code[0] == "qst"):
         college_name = "questrom"
     elif (code[0] == "sed"):
@@ -178,10 +181,11 @@ while True:
     else:
         college_name = code[0].lower()
 
+    
     college_code = code[0].lower()
     class_name = code[1].lower()
     class_code = code[2].lower()
-
+    semester = input("Please enter the semester (F or S): ")
     P_URL = "https://www.bu.edu/academics/"
     CollegeURL = college_name
     C_URL = "/courses/"
@@ -189,7 +193,11 @@ while True:
 
     URL = P_URL + CollegeURL + C_URL + Course_URL
     # Pranet - Data scraped
-    tables = pd.read_html(URL)
+    try:
+        tables = pd.read_html(URL)
+    except:
+        print("Invalid Class Code")
+        continue
     # Pranet - Help us index into particular dataframe elements
     professor_name = []
     days = []
@@ -248,13 +256,10 @@ while True:
                     end_time.append(time_convert(start_end[1]))
                     location.append(tables[i].loc[0, 'Location'])
 
-    print(professor_name)
+
     for names in professor_name:
-        print(names)
         average_rating = bu.GetAverageRating(names)
-        print(average_rating)
         ratings.append(average_rating)
-        # ratings[i] = bu.GetAverageRating(professor_name[i])
 
     filename = "test.csv"
     if (call_count == 0):
