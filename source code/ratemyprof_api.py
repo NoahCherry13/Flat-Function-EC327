@@ -3,10 +3,12 @@ import json
 import math
 import csv
 import os
+import pandas as pd
 
 from professor import Professor
 # This code has been tested using Python 3.6 interpreter and Linux (Ubuntu).
 # It should run under Windows, if anything you may need to make some adjustments for the file paths of the CSV files.
+
 
 
 class ProfessorNotFound(Exception):
@@ -58,7 +60,7 @@ class RateMyProfApi:
 
 
             for json_professor in json_response["professors"]:
-                print(json_professor)
+                #print(json_professor)
                 professor = Professor(
                     json_professor["tid"],
                     json_professor["tFname"],
@@ -208,48 +210,187 @@ class RateMyProfApi:
             for data in rlist:
                 writer.writerow(data)
 
-    def GetID(self, ln, dept):
-        for profID in uci.professors:
-            if uci.professors[profID].last_name == ln and uci.professors[profID].department == dept:
-               uci.professorID = profID
+    def GetID(self, ln):
+        count = 0
+        counter = 0
+        departmentlist = []
+        for profID in self.professors:
+            if self.professors[profID].last_name == ln:
+               self.professorID = profID
+               count+=1
 
-    def GetAverageRating(self,tid):
-        return uci.professors[uci.professorID].overall_rating
+        if (count >1):
+            print("Multiple professors found, please enter their department from the list")
+            for profID in self.professors:
+                if self.professors[profID].last_name == ln:
+                    departmentlist.append(self.professors[profID].department)
+                    print(self.professors[profID].department)
+
+            
+            department = input("Please enter department here (if the department is not listed above please enter it yourself): ")
+            
+            if (department not in departmentlist):
+                return -1000
+            
+            for department_name in departmentlist:
+                if (department_name == department):
+                    counter = counter + 1
+            
+            if (counter > 1):
+                return -1000
+            
+            for profID in self.professors:
+                if self.professors[profID].last_name == ln and self.professors[profID].department == department:
+                    self.professorID = profID
+                    return self.professorID
+        else:
+            return self.professorID
+
+    def GetAverageRating(self,name):
+            
+        if(self.GetID(name) != -1000):
+            return self.professors[self.GetID(name)].overall_rating
+        else:
+            return 0
+
+
+
+
 
 
 # Time for some examples!
 if __name__ == '__main__':
 
     # Getting general professor info!
-    uci = RateMyProfApi(124)
-    uci.GetID("Lin", "Engineering")
-    print("Professor Rating: "+str(uci.GetAverageRating(uci.professorID)))
-    '''
-    for profID in uci.professors:
-        if uci.professors[profID].last_name == "Hooper" and uci.professors[profID].department == "Information Science":
-            print("Professor Last Name "+uci.professors[profID].last_name)
-            print("Professor Rating "+str(uci.professors[profID].overall_rating))
-            print("Professor Dept "+str(uci.professors[profID].department))
+    bu = RateMyProfApi(124)
+    #print(bu.professors[1553112].overall_rating)
+    #professor_names = ["Lin", "Goh"]
+    #for names in professor_names:
+        #print(bu.GetAverageRating(names))
+    #print(uci.GetAverageRating("Densmore"))
 
-    #print(uci.get_professor_by_last_name("Densmore"))
-    #uci.search_professor("Pattis")
-    '''
-    '''
-    MassInstTech = RateMyProfApi(580)
-    MassInstTech.search_professor("Robert Berwick")
-    MassInstTech.print_professor_detail("overall_rating")
 
-    # Let's try the above class out to get data from a number of schools!
-    # William Patterson, Case Western, University of Chicago, CMU, Princeton, Yale, MIT, UTexas at Austin, Duke, Stanford, Rice, Tufts
-    # For simple test, try tid 97904 at school 1205
-    schools = [1205, 186, 1085, 181, 780, 1222, 580, 1255, 1350, 953, 799, 1040]
-    for school in schools:
-        print("=== Processing School " + str(school) + " ===")
-        rmps = RateMyProfApi(school)
-        rmps.WriteProfessorListToCSV()
-        professors = rmps.get_professor_list()
-        for professor in professors:
-            reviewslist = rmps.create_reviews_list(professor.get("tid"))
-            rmps.WriteReviewsListToCSV(reviewslist, professor.get("tid"))
+#Pranet - to get the libraries that support the data scraper
+#Function to convert hours from 12 hour format to 24 hours format
+def time_convert(t):
+    am_or_pm = t.split(" ",1)
+    if(am_or_pm[1] == "pm" and am_or_pm[0][:2] != "12"):
+        time = am_or_pm[0].replace(":","")
+        time = int(time)
+        return (time+1200)
+    else:
+        time = am_or_pm[0].replace(":","")
+        time = int(time)
+        return time       
 
-    '''
+
+call_count = 0
+
+while True:
+    class_code = input("Enter the class you want to take with spaces (if you want to exit enter q): ")
+    if(class_code == "q"):
+        break
+    semester = input("Please enter the semester (F or S): ")
+    course_name = (class_code.replace(" ","")).upper()
+
+    code = class_code.split()
+    if (code[0] == "qst"):
+        college_name = "questrom"
+    elif (code[0] == "sed"):
+        college_name = "wheelock"
+    else:
+        college_name = code[0].lower()
+    
+    college_code = code[0].lower()
+    class_name = code[1].lower()
+    class_code = code[2].lower()
+    
+    P_URL = "https://www.bu.edu/academics/"
+    CollegeURL = college_name
+    C_URL = "/courses/"
+    Course_URL = college_code + "-" + class_name + "-" + class_code + "/"
+    
+    URL = P_URL + CollegeURL + C_URL + Course_URL
+    #Pranet - Data scraped 
+    tables = pd.read_html(URL)
+    #Pranet - Help us index into particular dataframe elements
+    professor_name = []
+    days = []
+    time = []
+    start_time = []
+    end_time = [] 
+    section = []
+    location = []
+    ratings = []
+    
+    
+    for i in range(0, len(tables)):
+        section.append(tables[i].loc[0,'Section'])  
+    fall_index = section.index("A1")
+    spring_index = section.index("A1",(fall_index+1))
+    
+    if(semester == "F" or semester == "f"):
+        for i in range (0,spring_index):
+            if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
+                professor_name.append((tables[i].loc[0,'Instructor'] ))
+                splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+                start_end = splitter[1].split("-",1)
+                days.append(splitter[0])
+                start_time.append(time_convert(start_end[0]))
+                end_time.append(time_convert(start_end[1]))
+                location.append(tables[i].loc[0,'Location'])
+            else:
+                if(tables[i].loc[0,'Location'] in location):
+                    professor_name.append((tables[i].loc[0,'Instructor'] ))
+                    splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+                    start_end = splitter[1].split("-",1)
+                    days.append(splitter[0])
+                    start_time.append(time_convert(start_end[0]))
+                    end_time.append(time_convert(start_end[1]))
+                    location.append(tables[i].loc[0,'Location'])
+                    
+    
+    else:       
+        for i in range (spring_index,len(tables)):
+            if(tables[i].loc[0,'Instructor'] not in professor_name):    #Implemented check to ensure only lecture sections are caught.(Still needs some more work)
+                professor_name.append((tables[i].loc[0,'Instructor'] ))
+                splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+                start_end = splitter[1].split("-",1)
+                days.append(splitter[0])
+                start_time.append(time_convert(start_end[0]))
+                end_time.append(time_convert(start_end[1]))
+                location.append(tables[i].loc[0,'Location'])
+            else:
+                if(tables[i].loc[0,'Location'] in location):
+                    professor_name.append((tables[i].loc[0,'Instructor'] ))
+                    splitter = ((tables[i]).loc[0,'Schedule']).split(" ",1)
+                    start_end = splitter[1].split("-",1)
+                    days.append(splitter[0])
+                    start_time.append(time_convert(start_end[0]))
+                    end_time.append(time_convert(start_end[1]))
+                    location.append(tables[i].loc[0,'Location'])
+                
+    
+    print(professor_name)
+    for names in professor_name:
+        print(names)
+        print(bu.GetAverageRating(names))
+        ratings.append(bu.GetAverageRating(names))
+        #ratings[i] = bu.GetAverageRating(professor_name[i])
+        
+    
+    
+    filename = "test.csv"
+    if(call_count == 0):
+        call_count = call_count + 1
+        with open(filename, 'w', newline ='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            for i in range(0,len(professor_name)):
+                row = [course_name,professor_name[i],ratings[i],start_time[i], end_time[i],days[i]]
+                csvwriter.writerow(row)
+    else:
+        with open(filename, 'a', newline ='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            for i in range(0,len(professor_name)):
+                row = [course_name,professor_name[i],ratings[i],start_time[i], end_time[i],days[i]]
+                csvwriter.writerow(row)
