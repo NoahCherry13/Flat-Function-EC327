@@ -27,7 +27,7 @@ public:
 	double getRating();
 	int getStartTime();
 	int getEndTime();
-	vector <char> getDay();
+	string getDay();
 };
 
 #endif

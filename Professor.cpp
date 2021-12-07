@@ -66,7 +66,8 @@ int Professor :: getEndTime()
 	return end_time;
 }
 
-vector <char> Professor :: getDay()
+string Professor :: getDay()
 {
-	return day_taught;
+	string str(day_taught.begin(), day_taught.end());
+	return str;
 }

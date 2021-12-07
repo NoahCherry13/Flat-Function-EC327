@@ -2,14 +2,10 @@
 #include "FindConflicts.h"
 using namespace std;
 
-vector <vector<Professor*>> getSameDay(vector <Professor*> prof_ptrs)
+vector <vector<Professor*>> FindConflicts::getSameDay(vector <Professor*> prof_ptrs)
 {
-    //for (Professor* p : prof_ptrs)
-    //{
-    //    p->Display();
-    //}
     //This function finds the professors teaching on the same day to narrow down the classes causing potential time conflicts
-    vector <vector<Professor*>> sameDay_ptrs; //each element of this vector is a vector of professors teaching on the same day
+    vector <vector<Professor*>> sameDay_ptrs = {}; //each element of this vector is a vector of professors teaching on the same day
     int index = 0;
     for (vector <Professor*> ::iterator it = prof_ptrs.begin(); it != prof_ptrs.end(); it++)
     {
@@ -70,7 +66,7 @@ vector <vector<Professor*>> getSameDay(vector <Professor*> prof_ptrs)
 }
 
 
-bool isStartAfterStart(int startTime1, int startTime2)
+bool FindConflicts::isStartAfterStart(int startTime1, int startTime2)
 {
     //takes two start times as arguments and returns true if the first happens after the second
     int hour1 = startTime1 / 100;
@@ -99,7 +95,7 @@ bool isStartAfterStart(int startTime1, int startTime2)
         }
     }
 }
-bool isStartBeforeEnd(int startTime, int endTime)
+bool FindConflicts::isStartBeforeEnd(int startTime, int endTime)
 {
     int hourStart = startTime / 100;
     int hourEnd = endTime / 100;
@@ -126,7 +122,7 @@ bool isStartBeforeEnd(int startTime, int endTime)
     }
 }
 
-bool hasTimeConflicts(vector <Professor*> prof_ptrs)
+bool FindConflicts::hasTimeConflicts(vector <Professor*> prof_ptrs)
 {
     //this function checks whether or not the classes being taught on the same day create time conflicts
     vector <vector<Professor*>> sameDay_prof_ptrs = getSameDay(prof_ptrs);
