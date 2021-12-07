@@ -11,4 +11,5 @@ Our project utilizes a web scraper built in Python to obtain class information f
 Youtube video link -  
 
 Relevant information -  
-Link to RateMyProfessor API (certain modifications were made to the source code) - https://github.com/tisuela/ratemyprof-api  
+Link to RateMyProfessor API (certain modifications were made to the source code) - https://github.com/tisuela/ratemyprof-api 
+Link to table gui - https://github.com/friedmud/variadic_table
