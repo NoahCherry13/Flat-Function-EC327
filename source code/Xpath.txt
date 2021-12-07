@@ -1,3 +1,0 @@
-Xpath cheatsheet - Useful for analyzing html code of website to be scraped
-
-
