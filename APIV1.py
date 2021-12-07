@@ -212,9 +212,13 @@ while True:
 
     for i in range(0, len(tables)):
         section.append(tables[i].loc[0, 'Section'])
-    fall_index = section.index("A1")
-    spring_index = section.index("A1", (fall_index + 1))
-
+    
+    try:
+        fall_index = section.index("A1")
+        spring_index = section.index("A1", (fall_index + 1))
+    except:
+        print("Sorry but this class is not supported by the current version of the BU Class Scheduler")
+        continue
     if (semester == "F" or semester == "f"):
         for i in range(0, spring_index):
             if (tables[i].loc[
